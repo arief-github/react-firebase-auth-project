@@ -11,27 +11,13 @@ import AccountPage from '../Account';
 import AdminPage from '../Admin';
 
 import * as ROUTES from '../../constants/routes';
-import { withFirebase } from '../Firebase';
+import { withAuthentication } from '../Session';
 
-const App = ({ firebase }) => {
-  const [authUser, setAuthUser] = useState(null);
-
-  // like componentDidMount()
-  useEffect(() => {
-    const listener = firebase.auth.onAuthStateChanged(authUser => {
-      authUser ? setAuthUser(authUser) : setAuthUser(null)
-    })
-
-    // like componentWillUnmount()
-    return () => {
-      listener();
-    }
-  }, [firebase.auth])
-
+const App = () => {
   return (
-    <Router>
+      <Router>
         <div>
-          <Navigation authUser={authUser}/>
+          <Navigation />
           <hr/>
           <Route exact path={ROUTES.LANDING} component={LandingPage} />
           <Route path={ROUTES.SIGN_UP} component={SignUpPage}/>
@@ -41,9 +27,8 @@ const App = ({ firebase }) => {
           <Route path={ROUTES.ACCOUNT} component={AccountPage} />
           <Route path={ROUTES.ADMIN} component={AdminPage} />
         </div>
-    </Router>
-
+      </Router>
   )
 }
 
-export default withFirebase(App);
+export default withAuthentication(App);
