@@ -30,6 +30,7 @@ class Firebase {
     doCreateUserWithEmailAndPassword = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
     doSignInWithEmailAndPassword = (email, password) => this.auth.signInWithEmailAndPassword(email, password);
     doSignInWithGoogle = () => this.auth.signInWithPopup(this.googleProvider);
+    doSendEmailVerification = () => this.auth.currentUser.sendEmailVerification({ url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT })
 
     // auth API for signOUt
     doSignOut = () => this.auth.signOut();
@@ -60,6 +61,8 @@ class Firebase {
                         authUser = {
                             uid: authUser.uid,
                             email: authUser.email,
+                            emailVerified: authUser.emailVerified,
+                            providerData: authUser.providerData,
                             ...dbUser,
                         };
 
